@@ -1,0 +1,51 @@
+version: '3' 
+services: 
+  jira:
+    container_name: jira-compose
+    image: atlassian/jira-software:latest 
+    ports:      
+        - "2200:8080"
+    environment:
+     - ATL_PROXY_NAME=jira.internal
+    #  - ATL_PROXY_PORT=80
+     - ATL_TOMCAT_SCHEME=http 
+
+  confluence: 
+    container_name: confluence-compose
+    image: atlassian/confluence-server:latest
+    ports:      
+        - "2300:8090"
+        - "2301:8091"
+    environment: 
+     - ATL_PROXY_NAME=confluence.internal
+    #  - ATL_PROXY_PORT=80
+     - ATL_TOMCAT_SCHEME=http
+
+  bitbucket: 
+    container_name: bitbucket-compose 
+    image: atlassian/bitbucket-server:latest 
+    ports:      
+        - "2400:7990"
+        - "2499:7999"
+    environment: 
+     - SERVER_PROXY_NAME=bitbucket.internal
+    #  - SERVER_PROXY_PORT=80
+     - SERVER_SCHEME=http 
+
+  # nginx: 
+  #   container_name: nginx-compose
+  #   image: nginx:latest 
+  #   volumes:
+  #    - ./nginx.conf:/etc/nginx/nginx.conf 
+  #   depends_on: 
+  #    - jira 
+  #    - confluence 
+  #    - bitbucket 
+  #   ports: 
+  #    - "2000:80" 
+  #   networks: 
+  #     default: 
+  #       aliases:
+  #        - jira.internal
+  #        - confluence.internal
+  #        - bitbucket.internal
